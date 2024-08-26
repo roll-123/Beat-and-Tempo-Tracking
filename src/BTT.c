@@ -460,7 +460,14 @@ void btt_tempo_tracking              (BTT* self)
   
   //pick peaks from autocorrelation
   float old_derivative = 1, new_derivative;
-  int candidate_tempo_lags[self->num_tempo_candidates];
+#ifdef _MSC_VER
+  int* candidate_tempo_lags = _alloca(self->num_tempo_candidates * sizeof(int));
+#else
+  int candidate_tempo_lags[ self->num_tempo_candidates ];
+#endif// _MSC_VER
+
+
+
   for(i=0; i<self->num_tempo_candidates; candidate_tempo_lags[i++]=self->min_lag);
   int min_lag_index = 0;
   for(i=self->min_lag; i<self->max_lag-1; i++)
@@ -481,8 +488,15 @@ void btt_tempo_tracking              (BTT* self)
     }
 
   //cross correlate with pulses and get score components
-  float score_max     [self->num_tempo_candidates];
-  float score_variance[self->num_tempo_candidates];
+
+#ifdef _MSC_VER
+  float* score_max = _alloca(self->num_tempo_candidates * sizeof(float));
+  float* score_variance = _alloca(self->num_tempo_candidates * sizeof(float));
+#else
+  float score_max[ self->num_tempo_candidates ];
+  float score_variance[ self->num_tempo_candidates ];
+#endif
+
   float sum_of_score_max      = 0;
   float sum_of_score_variance = 0;
   int   num_pulses            = BTT_DEFAULT_XCORR_NUM_PULSES;

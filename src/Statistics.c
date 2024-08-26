@@ -502,7 +502,7 @@ double     adaptive_threshold_update(AdaptiveThreshold* self, double     x)
 /*--------------------------------------------------------------------*/
 double     statistics_random_flat()
 {
-  return random() / (double)RAND_MAX;
+  return rand() / (double)RAND_MAX;
 }
 
 /*--------------------------------------------------------------------*/
